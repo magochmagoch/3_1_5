@@ -61,7 +61,9 @@ public class UserServiceImp implements UserService {
     @Transactional
     @Override
     public void createUser(User user) {
-        user.setRoles(roleService.findByName("ROLE_USER"));
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            user.setRoles(roleService.findByName("ROLE_USER"));
+        }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }

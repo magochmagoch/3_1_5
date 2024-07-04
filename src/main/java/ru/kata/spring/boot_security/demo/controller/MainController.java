@@ -55,9 +55,15 @@ public class MainController {
 
     @PostMapping("/admin/createauser")
     public String create(@ModelAttribute("user") @Valid User user,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult,
+                         @RequestParam("role") String selectedRole) {
         if (bindingResult.hasErrors()) {
             return "create";
+        }
+        if (selectedRole.equals("ROLE_USER")) {
+            user.setRoles(roleService.findByName("ROLE_USER"));
+        } else if (selectedRole.equals("ROLE_ADMIN")) {
+            user.setRoles(roleService.findAll());
         }
         userService.createUser(user);
         return "redirect:/admin";

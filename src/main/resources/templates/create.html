@@ -24,6 +24,12 @@
     <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
     <br/>
 
+    <label for="role">Select role:</label>
+    <select id="role" name="role">
+        <option value="ROLE_USER">User Role</option>
+        <option value="ROLE_ADMIN">Admin Role</option>
+    </select>
+
     <input type="submit" value="Create"/>
 
 </form>
