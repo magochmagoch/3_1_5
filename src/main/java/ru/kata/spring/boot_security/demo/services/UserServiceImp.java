@@ -5,11 +5,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -23,11 +23,17 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImp implements UserService {
 
-    private UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
+    private final RoleService roleService;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public UserServiceImp(UserRepository userRepository,
+                          RoleService roleService,
+                          BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -54,14 +60,15 @@ public class UserServiceImp implements UserService {
 
     @Transactional
     @Override
-    public void createUser(User user, Collection<Role> roles) {
-        user.setRoles(roles);
+    public void createUser(User user) {
+        user.setRoles(roleService.findByName("ROLE_USER"));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
     @Override
-    public User readUserById(int id) {
-        Optional<User> user = userRepository.findById((long) id);
+    public User readUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
         return user.orElse(new User());
     }
 
@@ -72,15 +79,13 @@ public class UserServiceImp implements UserService {
 
     @Transactional
     @Override
-    public void updateUser(int id, User user) {
+    public void updateUser(Long id, User user) {
         try {
             User user0 = readUserById(id);
             user0.setUsername(user.getUsername());
-            user0.setPassword(user.getPassword());
+            user0.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user0.setEmail(user.getEmail());
-            if (user.getRoles() == null) {
-                user0.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
-            }
+            user0.setRoles(user.getRoles());
             userRepository.save(user0);
         } catch (NullPointerException e) {
             throw new EntityNotFoundException();
@@ -89,8 +94,8 @@ public class UserServiceImp implements UserService {
 
     @Transactional
     @Override
-    public void deleteUser(int id) {
-        userRepository.deleteById((long) id);
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 
 }

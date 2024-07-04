@@ -16,10 +16,10 @@ public interface UserService extends UserDetailsService {
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
     Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles);
 
-    void createUser(User user, Collection<Role> roles);
-    User readUserById(int id);
+    void createUser(User user);
+    User readUserById(Long id);
     List<User> readAllUsers();
-    void updateUser(int id, User user);
-    void deleteUser(int id);
+    void updateUser(Long id, User user);
+    void deleteUser(Long id);
 
 }

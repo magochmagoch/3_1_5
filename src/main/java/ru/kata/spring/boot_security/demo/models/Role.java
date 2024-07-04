@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.models;
 
-import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
@@ -12,7 +11,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.Collection;
 
-@Data
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
@@ -33,6 +31,30 @@ public class Role implements GrantedAuthority {
 
     public Role (int id, String name) {
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Collection<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Collection<User> users) {
+        this.users = users;
     }
 
     @Override
