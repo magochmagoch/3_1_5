@@ -15,7 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,12 +26,6 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Name must be given")
-    @Pattern(regexp = "^[a-zA-Z]+$",
-            message = "Name must contain only latin symbols")
-    @Column(name = "username", nullable = false)
-    private String username;
-
     @NotEmpty(message = "Password must be given")
     @Column(name = "password")
     private String password;
@@ -41,6 +34,17 @@ public class User implements UserDetails {
     @Email(message = "Non-correct email format")
     @Column(name = "email", nullable = false)
     private String email;
+
+    @NotEmpty(message = "First name must be given")
+    @Column(name = "first_name")
+    private String username;
+
+    @NotEmpty(message = "Last name must be given")
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "age")
+    private int age;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
@@ -61,14 +65,6 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -83,6 +79,30 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public Collection<Role> getRoles() {

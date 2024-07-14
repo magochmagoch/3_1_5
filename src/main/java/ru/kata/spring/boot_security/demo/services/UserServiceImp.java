@@ -13,9 +13,7 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,13 +40,18 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException(email);
         }
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
+                user.getEmail(),
                 user.getPassword(),
                 mapRolesToAuthorities(user.getRoles()));
     }
@@ -84,12 +87,15 @@ public class UserServiceImp implements UserService {
     public void updateUser(Long id, User user) {
         try {
             User user0 = readUserById(id);
-            user0.setUsername(user.getUsername());
             user0.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user0.setEmail(user.getEmail());
+            user0.setUsername(user.getUsername());
+            user0.setLastName(user.getLastName());
+            user0.setAge(user.getAge());
             user0.setRoles(user.getRoles());
             userRepository.save(user0);
         } catch (NullPointerException e) {
+            e.printStackTrace();
             throw new EntityNotFoundException();
         }
     }

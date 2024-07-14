@@ -13,6 +13,7 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
 
     User findByUsername(String username);
+    User findByEmail(String email);
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
     Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles);
 

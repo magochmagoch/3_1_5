@@ -17,90 +17,60 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/")
-public class MainController {
+@RequestMapping("/admin")
+public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
 
     @Autowired
-    public MainController(UserService userService, RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
     @GetMapping()
-    public String index() {
-        return "index";
-    }
-
-    @GetMapping("/user")
-    public String readUser(Principal principal, Model model) {
-        model.addAttribute("user", userService.findByUsername(principal.getName()));
-        return "user";
-    }
-
-    @GetMapping("/admin")
-    public String readAllUsers(Model model) {
+    public String readAllUsers(Principal principal, Model model) {
+        model.addAttribute("admin", userService.findByEmail(principal.getName()));
         model.addAttribute("users", userService.readAllUsers());
+        model.addAttribute("roles", roleService.findAll());
         return "admin_page";
     }
 
-    @GetMapping("/admin/create")
-    public String createForm(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("roles", roleService.findAll());
-        return "create";
-    }
-
-    @PostMapping("/admin/createauser")
+    @PostMapping("/createauser")
     public String create(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult,
                          @RequestParam("role") String selectedRole) {
         if (bindingResult.hasErrors()) {
-            return "create";
+            return "admin_page";
         }
-        if (selectedRole.equals("ROLE_USER")) {
+        if (selectedRole.equals("USER")) {
             user.setRoles(roleService.findByName("ROLE_USER"));
-        } else if (selectedRole.equals("ROLE_ADMIN")) {
+        } else if (selectedRole.equals("ADMIN")) {
             user.setRoles(roleService.findAll());
         }
         userService.createUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/update")
-    public String updateForm(Model model,
-                             @RequestParam("id") Long id) {
-        model.addAttribute(userService.readUserById(id));
-        return "update";
-    }
-
-    @PostMapping("/admin/updateauser")
+    @PostMapping("/updateauser")
     public String update(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult,
-                         @RequestParam("role") String selectedRole,
+                         @RequestParam(value = "role") String selectedRole,
                          @RequestParam("id") Long id) {
         if (bindingResult.hasErrors()) {
-            return "update";
+            return "admin_page";
         }
-        if (selectedRole.equals("ROLE_USER")) {
+        if (selectedRole.equals("USER")) {
             user.setRoles(roleService.findByName("ROLE_USER"));
-        } else if (selectedRole.equals("ROLE_ADMIN")) {
+        } else if (selectedRole.equals("ADMIN")) {
             user.setRoles(roleService.findAll());
         }
         userService.updateUser(id, user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/delete")
-    public String deleteForm(Model model,
-                             @RequestParam("id") Long id) {
-        model.addAttribute(userService.readUserById(id));
-        return "delete";
-    }
-
-    @PostMapping("/admin/deleteauser")
+    @PostMapping("/deleteauser")
     public String delete(@RequestParam("id") Long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
