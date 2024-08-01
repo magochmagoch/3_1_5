@@ -1,19 +1,15 @@
 package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,11 +31,6 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -48,17 +39,9 @@ public class UserServiceImp implements UserService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException(email);
+            throw new UsernameNotFoundException("User not found");
         }
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                mapRolesToAuthorities(user.getRoles()));
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+        return user;
     }
 
     @Transactional
@@ -84,18 +67,11 @@ public class UserServiceImp implements UserService {
 
     @Transactional
     @Override
-    public void updateUser(Long id, User user) {
+    public void updateUser(User user) {
         try {
-            User user0 = readUserById(id);
-            user0.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            user0.setEmail(user.getEmail());
-            user0.setUsername(user.getUsername());
-            user0.setLastName(user.getLastName());
-            user0.setAge(user.getAge());
-            user0.setRoles(user.getRoles());
-            userRepository.save(user0);
+            User user0 = readUserById(user.getId());
+            createUser(user0);
         } catch (NullPointerException e) {
-            e.printStackTrace();
             throw new EntityNotFoundException();
         }
     }

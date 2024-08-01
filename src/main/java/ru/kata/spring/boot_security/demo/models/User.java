@@ -1,6 +1,9 @@
 package ru.kata.spring.boot_security.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
@@ -16,7 +19,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "users")
@@ -24,37 +27,48 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id")
     private Long id;
 
     @NotEmpty(message = "Password must be given")
     @Column(name = "password")
+    @JsonProperty("password")
     private String password;
 
     @NotEmpty(message = "Email must be given")
     @Email(message = "Non-correct email format")
     @Column(name = "email", nullable = false)
+    @JsonProperty("email")
     private String email;
 
     @NotEmpty(message = "First name must be given")
     @Column(name = "first_name")
-    private String username;
+    @JsonProperty("firstName")
+    private String firstName;
 
     @NotEmpty(message = "Last name must be given")
     @Column(name = "last_name")
+    @JsonProperty("lastName")
     private String lastName;
 
     @Column(name = "age")
+    @JsonProperty("age")
     private int age;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonProperty("roles")
     private Collection<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        Collection<SimpleGrantedAuthority> authorities = new HashSet<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        return authorities;
     }
 
     public Long getId() {
@@ -81,12 +95,12 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -113,21 +127,31 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    @JsonIgnore
+    @Override
+    public String getUsername() {
+        return firstName;
+    }
+
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;

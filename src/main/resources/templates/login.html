@@ -11,25 +11,25 @@
 
 <div class="col-3 mx-auto">
 
-        <form class="form-horizontal" role="form" method="POST" action="/process_login">
+    <form class="form-horizontal" role="form" method="POST" action="/process_login">
 
-            <h1 class="h3 mb-3 fw-bold text-left">Please sign in</h1>
+        <h1 class="h3 mb-3 fw-bold text-left">Please sign in</h1>
 
-            <div class="form-floating">
-                <input type="email" class="form-control" name="email" id="floatingInput" placeholder="Email address" style="height: 50px">
-            </div>
+        <div class="form-floating">
+            <input type="email" class="form-control" name="email" id="floatingInput" placeholder="Email address" style="height: 50px">
+        </div>
 
-            <div class="form-floating">
-                <input type="password" class="form-control d-flex align-items-center" name="password" id="floatingPassword" placeholder="Password" style="height: 50px">
-            </div>
+        <div class="form-floating">
+            <input type="password" class="form-control d-flex align-items-center" name="password" id="floatingPassword" placeholder="Password" style="height: 50px">
+        </div>
 
-            <button class="w-100 btn btn-lg btn-primary mt-2" type="submit">Sign in</button>
+        <button class="w-100 btn btn-lg btn-primary mt-2" type="submit">Sign in</button>
 
-            <div th:if="${param.error}" style="color: red">
-                Incorrect Email or Password
-            </div>
+        <div th:if="${param.error}" style="color: red">
+            Incorrect Email or Password
+        </div>
 
-        </form>
+    </form>
 
 </div>
 
