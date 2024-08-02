@@ -27,6 +27,11 @@ public class AdminController {
         this.userService = userService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<User> readUserById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(userService.readUserById(id), HttpStatus.OK);
+    }
+
     @GetMapping()
     public ResponseEntity<List<User>> readAllUsers() {
         return new ResponseEntity<>(userService.readAllUsers(), HttpStatus.OK);

@@ -19,7 +19,7 @@ async function fillTableAboutUser(){
             <td>${currentUser.lastName}</td>
             <td>${currentUser.age}</td>
             <td>${currentUser.email}</td>
-            <td>${currentUser.roles.map(role => role.name).join(' ')}</td>
+            <td>${currentUser.roles.map(role => role.shortName).join(' ')}</td>
         </tr>`
     currentUserTable1.innerHTML = currentUserTableHTML;
 }
@@ -30,6 +30,6 @@ async function showUserEmailOnNavbar() {
     currentUserEmailNavbar.innerHTML =
         `<strong>${currentUser.email}</strong>
                  with roles: 
-                 ${currentUser.roles.map(role => role.name).join(' ')}`;
+                 ${currentUser.roles.map(role => role.shortName).join(' ')}`;
 }
 

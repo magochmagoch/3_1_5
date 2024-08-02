@@ -16,5 +16,5 @@ async function showUserEmailOnNavbar() {
     currentUserEmailNavbar.innerHTML =
         `<strong>${currentUser.email}</strong>
                  with roles: 
-                 ${currentUser.roles.map(role => role.name).join(' ')}`;
+                 ${currentUser.roles.map(role => role.shortName).join(' ')}`;
 }

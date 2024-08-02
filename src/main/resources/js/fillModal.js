@@ -39,7 +39,7 @@ async function fillModal(modal) {
             rolesSelect = rolesSelectDelete;
             for (let i = 0; i < user.roles.length; i++) {
                 userRolesHTML +=
-                    `<option value="${user.roles[i].name}">${user.roles[i].name}</option>`;
+                    `<option value="${user.roles[i].name}">${user.roles[i].shortName}</option>`;
             }
         } else if (rolesSelectEdit !== null) {
             rolesSelect = rolesSelectEdit;

@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>User page</title>
 </head>
 
-
 <body>
-<!--Navbar-->
 <header>
     <nav class="navbar navbar-dark bg-dark p-0 shadow ">
         <div class="nav-item text-white px-3">
@@ -24,17 +25,18 @@
 
 <div class="container-fluid mt-3 ">
 
-    <!--Sidebar-->
     <div class="row">
         <div class="col-md-2 px-0">
             <div class="d-flex flex-column flex-shrink-0 p-0 text-white">
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a href="#admin-panel" data-bs-toggle="pill" class="nav-link active no-refresh" role="tab" aria-current="true">
+                        <a href="#admin-panel" data-bs-toggle="pill" class="nav-link active no-refresh" role="tab"
+                           aria-current="true">
                             Admin</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#userInfo" data-bs-toggle="pill" class="nav-link no-refresh" role="tab" aria-current="false">
+                        <a href="#userInfo" data-bs-toggle="pill" class="nav-link no-refresh" role="tab"
+                           aria-current="false">
                             User
                         </a>
                     </li>
@@ -46,7 +48,6 @@
         <div class="col-md-10 bg-light">
             <div class="tab-content">
 
-                <!--Admin Panel-->
                 <div class="tab-pane fade show active" id="admin-panel" role="tabpanel">
                     <div class="container-fluid">
                         <h2>Admin Panel</h2>
@@ -63,7 +64,6 @@
                             </li>
                         </ul>
 
-                        <!--User table-->
                         <div class="tab-content">
                             <div id="users-table" class="tab-pane fade show active">
                                 <div class="card">
@@ -78,8 +78,8 @@
                                                 <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Surname</th>
+                                                    <th>First Name</th>
+                                                    <th>Last Name</th>
                                                     <th>Age</th>
                                                     <th>Password</th>
                                                     <th>Role</th>
@@ -95,7 +95,6 @@
                                 </div>
                             </div>
 
-                            <!--new User-->
                             <div class="tab-pane fade" id="newUserForm" role="form">
                                 <div class="card">
                                     <div class="container-fluid px-0">
@@ -105,11 +104,13 @@
                                     <div class="card-body col-5 mx-auto text-center mt-3">
                                         <form id="newUser">
                                             <label for="firstName" class="form-label fw-bold mb-0">First name</label>
-                                            <input type="text" class="form-control" id="firstName" placeholder="First name">
+                                            <input type="text" class="form-control" id="firstName"
+                                                   placeholder="First name">
                                             <span id="nameError" class="text-danger"></span>
                                             <br>
                                             <label for="lastName" class="form-label fw-bold mb-0">Last name</label>
-                                            <input type="text" class="form-control" id="lastName" placeholder="Last name">
+                                            <input type="text" class="form-control" id="lastName"
+                                                   placeholder="Last name">
                                             <span id="surnameError" class="text-danger"></span>
                                             <br>
                                             <label for="age" class="form-label fw-bold mb-0">Age</label>
@@ -121,11 +122,13 @@
                                             <span id="emailError" class="text-danger"></span>
                                             <br>
                                             <label for="password" class="form-label fw-bold mb-0">Password</label>
-                                            <input type="text" class="form-control" id="password" placeholder="Password">
+                                            <input type="text" class="form-control" id="password"
+                                                   placeholder="Password">
                                             <span id="passwordError" class="text-danger"></span>
                                             <br>
                                             <label for="roles" class="form-label fw-bold mb-0">Role</label>
-                                            <select class="form-select" id="roles" size="2" multiple="multiple" name="rolesForController">
+                                            <select class="form-select" id="roles" size="2" multiple="multiple"
+                                                    name="rolesForController">
                                                 <option value="ROLE_USER">USER</option>
                                                 <option value="ROLE_ADMIN">ADMIN</option>
                                             </select>
@@ -142,10 +145,9 @@
                     </div>
                 </div>
 
-                <!--CurrentUser info-->
                 <div class="tab-pane fade" id="userInfo" role="tabpanel">
                     <div class="container-fluid">
-                        <h2>User Information Page</h2>
+                        <h2>User information-page</h2>
                         <div class="card">
                             <div class="container-fluid px-0 bg-light border">
                                 <h5 class="card-header">
@@ -177,7 +179,6 @@
     </div>
 </div>
 
-<!--delete-->
 <div class="modal fade" id="deleteModal" tabindex="-1"
      aria-labelledby="delete" aria-hidden="true">
     <div class="modal-dialog">
@@ -193,26 +194,28 @@
                         <input type="text" class="form-control" id="idDelete" data-user-id="id" readonly>
                         <br>
                         <label for="firstNameDelete" class="form-label fw-bold mb-0">First name</label>
-                        <input type="text"  class="form-control" id="firstNameDelete" data-user-id="firstName"  readonly>
+                        <input type="text" class="form-control" id="firstNameDelete" data-user-id="firstName" readonly>
                         <br>
                         <label for="lastNameDelete" class="form-label fw-bold mb-0">Last name</label>
-                        <input type="text" class="form-control" id="lastNameDelete" data-user-id="lastName"  readonly>
+                        <input type="text" class="form-control" id="lastNameDelete" data-user-id="lastName" readonly>
                         <br>
                         <label for="ageDelete" class="form-label fw-bold mb-0">Age</label>
-                        <input type="text" class="form-control" id="ageDelete" data-user-id="age"  readonly>
+                        <input type="text" class="form-control" id="ageDelete" data-user-id="age" readonly>
                         <br>
                         <label for="emailDelete" class="form-label fw-bold mb-0">Email</label>
-                        <input type="text"  class="form-control" id="emailDelete" data-user-id="email"  readonly>
+                        <input type="text" class="form-control" id="emailDelete" data-user-id="email" readonly>
                         <br>
                         <label for="rolesDelete" class="form-label fw-bold mb-0">Role</label>
-                        <select class="form-select" id="rolesDelete" data-user-id="rolesDelete"  size="2" multiple="multiple" disabled>
+                        <select class="form-select" id="rolesDelete" data-user-id="rolesDelete" size="2"
+                                multiple="multiple" disabled>
                         </select>
                         <br>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Close</button>
-                        <button type="submit" class="btn btn-danger" >
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-danger">
                             Delete
                         </button>
                     </div>
@@ -222,7 +225,6 @@
     </div>
 </div>
 
-<!--edit-->
 <div class="modal fade" id="editModal" tabindex="-1"
      aria-labelledby="edit" aria-hidden="true">
     <div class="modal-dialog">
@@ -238,7 +240,7 @@
                         <input type="text" class="form-control" id="idEdit" data-user-id="id" readonly>
                         <br>
                         <label for="firstNameEdit" class="form-label fw-bold mb-0">First name</label>
-                        <input type="text"  class="form-control" id="firstNameEdit" data-user-id="firstName">
+                        <input type="text" class="form-control" id="firstNameEdit" data-user-id="firstName">
                         <br>
                         <label for="lastNameEdit" class="form-label fw-bold mb-0">Last name</label>
                         <input type="text" class="form-control" id="lastNameEdit" data-user-id="lastName">
@@ -247,20 +249,22 @@
                         <input type="text" class="form-control" id="ageEdit" data-user-id="age">
                         <br>
                         <label for="emailEdit" class="form-label fw-bold mb-0">Email</label>
-                        <input type="text"  class="form-control" id="emailEdit" data-user-id="email">
+                        <input type="text" class="form-control" id="emailEdit" data-user-id="email">
                         <br>
                         <label for="passwordEdit" class="form-label fw-bold mb-0">Password</label>
-                        <input type="text"  class="form-control" id="passwordEdit" data-user-id="password">
+                        <input type="text" class="form-control" id="passwordEdit" data-user-id="password">
                         <br>
                         <label for="rolesEdit" class="form-label fw-bold mb-0">Role</label>
-                        <select class="form-select" id="rolesEdit" data-user-id="rolesEdit"  size="2" multiple="multiple">
+                        <select class="form-select" id="rolesEdit" data-user-id="rolesEdit" size="2"
+                                multiple="multiple">
                         </select>
                         <br>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Close</button>
-                        <button type="submit" class="btn btn-primary" >
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">
                             Edit
                         </button>
                     </div>
@@ -270,13 +274,21 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 <script src="/js/app.js"></script>
 <script src="/js/fillTables.js"></script>
 <script src="/js/addUser.js"></script>
 <script src="/js/fillModal.js"></script>
 <script src="/js/deleteUser.js"></script>
 <script src="/js/editUser.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </body>
+
 </html>

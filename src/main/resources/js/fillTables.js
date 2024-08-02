@@ -21,7 +21,7 @@ async function fillTableOfAllUsers() {
                 <td>${user.lastName}</td>
                 <td>${user.age}</td>
                 <td>${user.password}</td>
-                <td>${user.roles.map(role => role.name).join(' ')}</td>
+                <td>${user.roles.map(role => role.shortName).join(' ')}</td>
                 <td>
                     <button class="btn btn-info btn-sm text-white"
                             data-bs-toggle="modal"
@@ -53,7 +53,7 @@ async function fillTableAboutCurrentUser(){
             <td>${currentUser.lastName}</td>
             <td>${currentUser.age}</td>
             <td>${currentUser.password}</td>
-            <td>${currentUser.roles.map(role => role.name).join(' ')}</td>
+            <td>${currentUser.roles.map(role => role.shortName).join(' ')}</td>
         </tr>`
     currentUserTable.innerHTML = currentUserTableHTML;
 }
